@@ -1,13 +1,13 @@
 import React from "react";
-import { Text, Group, Grid } from "@mantine/core";
+import { Text, Group, Grid, Image, Center } from "@mantine/core";
 import styles from "./Footer.module.scss";
 
 const Footer = () => {
   return (
     <div className={styles.container}>
-      <Grid columns={20} my={30}>
+      <Grid columns={20} my={30} className={styles.footer__content}>
         <Grid.Col md={10} xl={8}>
-          Logo
+          <Image src="./image/logo.png" alt="logo" width={200} />
         </Grid.Col>
         <Grid.Col md={10} xl={4}>
           <h4>Trợ giúp</h4>

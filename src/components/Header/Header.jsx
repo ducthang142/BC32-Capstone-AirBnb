@@ -89,7 +89,11 @@ const Header1 = () => {
   return (
     <>
       <Box className={styles.header}>
-        <Header height={60} px="md" className={styles.container}>
+        <Header
+          height={size.width > 549 ? 60 : 120}
+          px="md"
+          className={styles.container}
+        >
           <Group position="apart" sx={{ height: "100%" }}>
             <Image
               width={130}
@@ -99,16 +103,37 @@ const Header1 = () => {
               style={{ cursor: "pointer" }}
             />
 
-            <div hidden={size.width > 820 ? false : true } ><SearchBar /></div> 
+            <div hidden={size.width > 549 ? false : true}>
+              <SearchBar />
+            </div>
 
             <Group className={classes.hiddenMobile} hidden={user}>
-              <Button variant="default" onClick={() => navigate("/signin")}>
+              <Button
+                variant="outline"
+                color="pink"
+                onClick={() => navigate("/signin")}
+              >
                 Sign in
               </Button>
-              <Button onClick={() => navigate("/signup")}>Sign up</Button>
+              <Button onClick={() => navigate("/signup")} color="pink">
+                Sign up
+              </Button>
             </Group>
 
-            <Menu width={160} shadow="md" hidden={!user}>
+            <Menu
+              width={160}
+              shadow="md"
+              hidden={!user}
+              styles={{
+                item: {
+                  "&[data-hovered]": {
+                    backgroundColor:
+                    theme.colors.pink[6],
+                    color: theme.white,
+                  },
+                },
+              }}
+            >
               <Menu.Target>
                 <Avatar
                   radius="xl"
@@ -138,7 +163,9 @@ const Header1 = () => {
               className={classes.hiddenDesktop}
               hidden={user}
             />
-            <div hidden={size.width > 820 ? true : false } ><SearchBar /></div> 
+            <div hidden={size.width > 549 ? true : false}>
+              <SearchBar />
+            </div>
           </Group>
         </Header>
 
@@ -147,7 +174,6 @@ const Header1 = () => {
           onClose={closeDrawer}
           size="100%"
           padding="md"
-          title="Navigation"
           className={classes.hiddenDesktop}
           zIndex={1000000}
         >
@@ -163,8 +189,10 @@ const Header1 = () => {
             />
 
             <Group position="center" grow pb="xl" px="md">
-              <Button variant="default">Sign in</Button>
-              <Button>Sign up</Button>
+              <Button variant="outline" color="pink">
+                Sign in
+              </Button>
+              <Button color="pink">Sign up</Button>
             </Group>
           </ScrollArea>
         </Drawer>

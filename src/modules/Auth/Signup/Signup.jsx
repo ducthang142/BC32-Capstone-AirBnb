@@ -14,6 +14,7 @@ import {
   Grid,
   Modal,
   Image,
+  Group,
   LoadingOverlay,
 } from "@mantine/core";
 
@@ -113,6 +114,7 @@ const Signup = () => {
                   size="md"
                   type="submit"
                   className={styles.signup__button}
+                  color="pink"
                 >
                   Đăng Ký
                 </Button>
@@ -141,13 +143,17 @@ const Signup = () => {
         <Text size={25} fw={700}>
           Tạo tài khoản thành công
         </Text>
-        <Button
-          size="md"
-          className={styles.signup__button}
-          onClick={() => navigate("/signin")}
-        >
-          Đăng nhập ngay!
-        </Button>
+
+        <Group position="center">
+          <Button
+            size="md"
+            className={styles.signup__button}
+            onClick={() => navigate("/signin")}
+            color="pink"
+          >
+            Đăng nhập ngay!
+          </Button>
+        </Group>
       </Modal>
     </>
   );

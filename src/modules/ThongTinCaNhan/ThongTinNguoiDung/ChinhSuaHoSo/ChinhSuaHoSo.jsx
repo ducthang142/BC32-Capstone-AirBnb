@@ -8,12 +8,15 @@ import {
   Text,
   Modal,
   LoadingOverlay,
+  Group,
 } from "@mantine/core";
 import styles from "./ChinhSuaHoSo.module.scss";
 import { useForm } from "@mantine/form";
 import { DatePicker } from "@mantine/dates";
 import { update, resetIsUpdate } from "../../../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import formatDateToFE from "../../../../utils/formatDateToFE";
+import formatDateUpAPI from "../../../../utils/formatDateUpAPI";
 
 const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
   const [opened, setOpened] = useState(false);
@@ -24,6 +27,7 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
     (state) => state.auth
   );
 
+  //form
   const form = useForm({
     validateInputOnChange: true,
     initialValues: {
@@ -43,12 +47,13 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
     },
   });
 
+  //fill lên input
   useEffect(() => {
     form.setValues({
       name: nguoiDung.name,
       email: nguoiDung.email,
       phone: nguoiDung.phone,
-      birthday: new Date(nguoiDung.birthday),
+      birthday: new Date(formatDateToFE(nguoiDung.birthday)),
       gender: true,
     });
   }, [opened]);
@@ -56,7 +61,7 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
   const handleSubmit = (values) => {
     const newValues = {
       ...values,
-      birthday: values.birthday.toLocaleDateString(),
+      birthday: formatDateUpAPI(values.birthday),
     };
     setUserInfo(newValues);
     setOpenModal(true);
@@ -121,7 +126,7 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               {...form.getInputProps("birthday")}
             />
 
-            <Button mt="xl" size="md" type="submit">
+            <Button mt="xl" size="md" type="submit" color="pink">
               Cập Nhật
             </Button>
             {updateError && <Text color="red">{updateError}</Text>}
@@ -131,13 +136,16 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
       </Drawer>
 
       {/* Modal */}
-      <Modal
-        opened={openModal}
-        onClose={() => setOpenModal(false)}
-        title="Bạn có muốn cập nhật lại thông tin!"
-      >
-        <Button onClick={() => handleUpdate()}>Có</Button>
-        <Button onClick={() => setOpenModal(false)}>Không</Button>
+      <Modal opened={openModal} onClose={() => setOpenModal(false)}>
+        <Title m={20} className="text-center">Bạn có muốn cập nhật lại thông tin!</Title>
+        <Group position="center">
+          <Button onClick={() => handleUpdate()} w={90} color="pink" variant="outline">
+            Có
+          </Button>
+          <Button onClick={() => setOpenModal(false)} w={90} color="pink">
+            Không
+          </Button>
+        </Group>
       </Modal>
 
       <Modal

@@ -106,9 +106,8 @@ const ThongTinNguoiDung = () => {
         </Text>
 
         <Text mt="xs" color="dimmed" size="sm" align="center">
-          {new Date(nguoiDung.birthday).getDate()}/
-          {new Date(nguoiDung.birthday).getMonth() + 1}/
-          {new Date(nguoiDung.birthday).getFullYear()}
+          {nguoiDung.birthday?.slice(0, 2)}/{nguoiDung.birthday?.slice(3, 5)}/
+          {nguoiDung.birthday?.slice(6, 10)}
         </Text>
 
         <Text mt="xs" color="dimmed" size="sm" align="center">
@@ -121,6 +120,7 @@ const ThongTinNguoiDung = () => {
         opened={opened}
         onClose={() => setOpened(false)}
         title="Cập nhật ảnh avatar"
+        size={imgPreview ? "auto" : "sm"}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -130,7 +130,7 @@ const ThongTinNguoiDung = () => {
             <input type="file" onChange={handleChangeImage} />
             {imgPreview && <img width="150" src={imgPreview} alt="preview" />}
           </div>
-          <button>Cập nhật</button>
+          <button className={styles.button}>Cập nhật</button>
           <LoadingOverlay visible={loading} overlayBlur={2} />
         </form>
       </Modal>

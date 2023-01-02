@@ -38,18 +38,20 @@ const ChiTietPhong = () => {
       <br />
       <br />
       <br />
-      <Text fw={700} fz={28} className="mb-3">
+      <Text fw={700} fz={26} className="mb-3">
         {phong.tenPhong}
       </Text>
       <Image src={phong.hinhAnh} alt={phong.tenPhong} radius={10} />
       <Grid className="mt-3 mb-3">
         <Grid.Col md={8}>
           <Paper shadow="lg" p="md" radius={10}>
-            <Text>
+            <Text fs={24} fw="bold" mb={10}>
               {phong.khach} khách - {phong.phongNgu} phòng ngủ - {phong.giuong}{" "}
               giường - {phong.phongTam} phòng tắm
             </Text>
-            <Text>{phong.moTa}</Text>
+            <Text mb={20}>{phong.moTa}</Text>
+
+            <Text fw={700} >Tiện ích:</Text>
             {phong.mayGiat && (
               <p>
                 <IconWashMachine /> Máy giặt

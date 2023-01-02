@@ -62,7 +62,7 @@ const ThongTinDatPhong = () => {
   return (
     <>
       {thongTinDatPhong?.map((item, index) => (
-        <Card withBorder p="lg" className={classes.card}>
+        <Card withBorder p="lg" className={classes.card} key={index} mb={20}>
           <Card.Section>
             <Image
               src={handleRoomInfo(item.maPhong)[0].hinhAnh}
@@ -89,7 +89,7 @@ const ThongTinDatPhong = () => {
           </Text>
 
           <Card.Section className={classes.footer}>
-            <Button onClick={() => navigate(`/chitietphong/${item.maPhong}`)}>
+            <Button onClick={() => navigate(`/chitietphong/${item.maPhong}`)} color="pink">
               Xem chi tiết phòng
             </Button>
           </Card.Section>

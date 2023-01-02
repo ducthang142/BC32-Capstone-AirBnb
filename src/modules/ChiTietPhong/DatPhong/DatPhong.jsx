@@ -10,6 +10,8 @@ import {
   Title,
   Input,
   LoadingOverlay,
+  Group,
+  Text,
 } from "@mantine/core";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -47,9 +49,6 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
   const danhSachDaDat = danhSachPhongDat?.filter(
     (item) => item.maPhong == maPhong && new Date(item.ngayDi) > new Date()
   );
-  
-
-  
 
   const danhSachNgayDat = danhSachDaDat.map((item) => {
     return { ngayDen: item.ngayDen, ngayDi: item.ngayDi };
@@ -160,15 +159,22 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
           minDate={value[0] || new Date()}
           maxDate={newB[0]}
           excludeDate={(date) => d.includes(new Date(date).getTime())}
+          styles={(theme) => ({
+            input: {
+              "&:focus-within": {
+                borderColor: theme.colors.pink[6],
+              },
+            },
+          })}
         />
 
         <Menu position="bottom-start">
           <Menu.Target>
             <Input value={`${khach} khách`} />
           </Menu.Target>
-          <Menu.Dropdown>
+          <Menu.Dropdown className={styles.menu}>
             <div>
-              <span>Người lớn</span>
+              <p>Người lớn</p>
               <button
                 onClick={() => handleDecrease("nguoiLon")}
                 disabled={nguoiLon === 1}
@@ -184,7 +190,7 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
               </button>
             </div>
             <div>
-              <span>Trẻ em</span>
+              <p>Trẻ em</p>
               <button
                 onClick={() => handleDecrease("treEm")}
                 disabled={treEm === 0}
@@ -200,7 +206,7 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
               </button>
             </div>
             <div>
-              <span>Em bé</span>
+              <p>Em bé</p>
               <button
                 onClick={() => handleDecrease("emBe")}
                 disabled={emBe === 0}
@@ -216,7 +222,7 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
               </button>
             </div>
             <div>
-              <span>Thú cưng</span>
+              <p>Thú cưng</p>
               <button
                 onClick={() => handleDecrease("thuCung")}
                 disabled={thuCung === 0}
@@ -234,7 +240,9 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
           </Menu.Dropdown>
         </Menu>
         <br />
-        <Button onClick={() => handleBooking()}>Đặt Phòng</Button>
+        <Button onClick={() => handleBooking()} color="pink">
+          Đặt Phòng
+        </Button>
 
         <div>
           <table class="table">
@@ -255,16 +263,21 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
       </div>
 
       {/* Modal */}
-      <Modal
-        size="auto"
-        opened={opened}
-        onClose={() => setOpened(false)}
-        withCloseButton={false}
-        centered
-      >
-        <Title>Đăng nhập để đặt phòng!</Title>
-        <Button onClick={() => navigate(url)}>Đăng Nhập</Button>
-        <Button onClick={() => setOpened(false)}>Đóng</Button>
+      <Modal size="auto" opened={opened} withCloseButton={false} centered>
+        <Title m={20}>Đăng nhập để đặt phòng!</Title>
+        <Group position="center">
+          <Button onClick={() => navigate(url)} color="pink" w={120}>
+            Đăng Nhập
+          </Button>
+          <Button
+            onClick={() => setOpened(false)}
+            color="pink"
+            w={120}
+            variant="outline"
+          >
+            Đóng
+          </Button>
+        </Group>
       </Modal>
 
       <Modal
@@ -274,9 +287,12 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
         withCloseButton={false}
         centered
       >
-        <Title>Hãy chọn ngày muốn thuê!</Title>
-
-        <Button onClick={() => setOpenWarning(false)}>Đóng</Button>
+        <Title m={20}>Hãy chọn ngày muốn thuê!</Title>
+        <Group position="center">
+          <Button onClick={() => setOpenWarning(false)} color="pink">
+            Đóng
+          </Button>
+        </Group>
       </Modal>
 
       <Modal
@@ -326,24 +342,33 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
             <td>${giaTien * soDemThue}</td>
           </tr>
         </table>
-        <div
-          className="d-flex justify-content-end"
-          style={{ position: "relative" }}
-        >
-          <Button onClick={() => handleConfirm()}>Đồng ý</Button>
-          <Button onClick={() => setOpenBooking(false)}>Hủy</Button>
-        </div>
+        <Group position="center" style={{ position: "relative" }}>
+          <Button onClick={() => handleConfirm()} w={100} color="pink">
+            Đồng ý
+          </Button>
+          <Button
+            onClick={() => setOpenBooking(false)}
+            w={100}
+            color="pink"
+            variant="outline"
+          >
+            Hủy
+          </Button>
+        </Group>
         <LoadingOverlay visible={bookingLoading} overlayBlur={2} />
       </Modal>
 
       <Modal size="auto" opened={isBooked} withCloseButton={false} centered>
-        <Title>Đặt phòng thành công!</Title>
+        <Title m={20}>Đặt phòng thành công!</Title>
 
-        <Button
-          onClick={() => dispatch(resetIsBooked()) & setOpenBooking(false)}
-        >
-          Đóng
-        </Button>
+        <Group position="center">
+          <Button
+            onClick={() => dispatch(resetIsBooked()) & setOpenBooking(false)}
+            color="pink"
+          >
+            Đóng
+          </Button>
+        </Group>
       </Modal>
     </>
   );

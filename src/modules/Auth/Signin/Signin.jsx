@@ -75,6 +75,7 @@ const Signin = () => {
                 size="md"
                 type="submit"
                 className={styles.signin__button}
+                color="pink"
               >
                 Đăng Nhập
               </Button>

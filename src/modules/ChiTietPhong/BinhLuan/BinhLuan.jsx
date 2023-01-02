@@ -100,7 +100,7 @@ const BinhLuan = ({ maPhong }) => {
           </Paper>
         ))}
       </Spoiler>
-      <div hidden={!user} className={`${styles.comment} mt-3`} >
+      <div hidden={!user} className={`${styles.comment} mt-3`}>
         <Group>
           <Avatar src={user ? user.user.avatar : ""} radius="xl" size={40} />
           <div>
@@ -121,8 +121,17 @@ const BinhLuan = ({ maPhong }) => {
             onChange={(event) => setComment(event.currentTarget.value)}
             mb={16}
             style={{ position: "relative" }}
+            styles={(theme) => ({
+              input: {
+                "&:focus-within": {
+                  borderColor: theme.colors.pink[6],
+                },
+              },
+            })}
           />
-          <Button onClick={() => handleComment()}>Bình luận</Button>
+          <Button onClick={() => handleComment()} color="pink" mb={20}>
+            Bình luận
+          </Button>
           <LoadingOverlay visible={cmtLoading} overlayBlur={2} />
         </div>
       </div>

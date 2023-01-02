@@ -1,8 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import vitriAPI from "../services/vitriAPI";
 
 const initialState = {
+  danhSachViTri: null,
+  danhSachViTriPhanTrang: null,
+  loading: false,
   count: 0,
 };
+
+// Lấy danh sách vị trí
+export const listVitri = createAsyncThunk("home/vitri", async () => {
+  try {
+    const data = await vitriAPI.getViTri();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+//Lấy danh sách vị trí phân trang cho showing
+export const listViTriPhanTrang = createAsyncThunk("home/vitriphantrang", async () => {
+  try {
+    const data = await vitriAPI.getViTriPhanTrang();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+});
 
 const homeSlice = createSlice({
   name: "home",
@@ -13,38 +37,33 @@ const homeSlice = createSlice({
     },
   },
 
-  //   extraReducers: (builder) => {
-  //     //Comment
-  //     builder.addCase(postCmt.pending, (state, action) => {
-  //       return { ...state, cmtLoading: true };
-  //     });
+  extraReducers: (builder) => {
+    //Lấy danh sách vị trí
+    builder.addCase(listVitri.pending, (state, action) => {
+      return { ...state, loading: true };
+    });
 
-  //     builder.addCase(postCmt.fulfilled, (state, action) => {
-  //       return { ...state, cmtLoading: false, isCmt: state.isCmt + 1 };
-  //     });
+    builder.addCase(listVitri.fulfilled, (state, action) => {
+      return { ...state, loading: false, danhSachViTri: action.payload};
+    });
 
-  //     builder.addCase(postCmt.rejected, (state, action) => {
-  //       return { ...state, cmtLoading: false };
-  //     });
+    builder.addCase(listVitri.rejected, (state, action) => {
+      return { ...state, loading: false };
+    });
 
-  //     //Booking
-  //     builder.addCase(booking.pending, (state, action) => {
-  //       return { ...state, bookingLoading: true };
-  //     });
+    //Lấy danh sách vị trí phân trang cho showing
+    builder.addCase(listViTriPhanTrang.pending, (state, action) => {
+      return { ...state, loading: true };
+    });
 
-  //     builder.addCase(booking.fulfilled, (state, action) => {
-  //       return {
-  //         ...state,
-  //         bookingLoading: false,
-  //         isBooked: true,
-  //         count: state.count + 1,
-  //       };
-  //     });
+    builder.addCase(listViTriPhanTrang.fulfilled, (state, action) => {
+      return { ...state, loading: false, danhSachViTriPhanTrang: action.payload};
+    });
 
-  //     builder.addCase(booking.rejected, (state, action) => {
-  //       return { ...state, bookingLoading: false };
-  //     });
-  //   },
+    builder.addCase(listViTriPhanTrang.rejected, (state, action) => {
+      return { ...state, loading: false };
+    });
+  },
 });
 
 export const { increaseCount } = homeSlice.actions;

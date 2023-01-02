@@ -13,3 +13,33 @@
 .table h5 {
   margin: 0
 }
+
+.menu {
+  & p {
+    font-size: 20px;
+    font-weight: 500;
+    width: 120px;
+    display: inline-block;
+  }
+
+  & span {
+    text-align: center;
+    width: 40px;
+    display: inline-block;
+  }
+
+  & button {
+    text-align: center;
+    border: none;
+    background-color: #e64980;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    height: 1.8rem;
+    width: 2rem;
+    border-radius: 5px;
+    &:disabled {
+      background-color: gray;
+    }
+  }
+}
