@@ -17,6 +17,7 @@ import {
   Group,
   LoadingOverlay,
 } from "@mantine/core";
+import formatDateUpAPI from "../../../utils/formatDateUpAPI";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const Signup = () => {
   const handleSubmit = (values) => {
     const newValues = {
       ...values,
-      birthday: values.birthday.toLocaleDateString(),
+      birthday: formatDateUpAPI(values.birthday),
     };
 
     dispatch(signup(newValues));
