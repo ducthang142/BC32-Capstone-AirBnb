@@ -1,0 +1,13 @@
+.container{
+    max-width: 90%;
+    margin: 0 auto;
+
+}
+
+.footer__copyright {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.219);
+}
