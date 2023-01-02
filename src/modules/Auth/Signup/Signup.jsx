@@ -40,7 +40,7 @@ const Signup = () => {
 
     validate: {
       name: (value) =>
-        value.length < 6 ? "Tên phải có ít nhất 6 kí tự" : null,
+        value.length < 6 ? "Tên phải có ít nhất 6 kí tự" : value.length > 16 ? "Tên không được quá 16 kí tự" : null,
       password: (value) =>
         /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value)
           ? null
