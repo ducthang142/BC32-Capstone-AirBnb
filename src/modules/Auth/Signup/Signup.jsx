@@ -89,24 +89,52 @@ const Signup = () => {
                 label="Họ Tên"
                 mt="md"
                 size="md"
+                styles={(theme) => ({
+                  input: {
+                    "&:focus-within": {
+                      borderColor: theme.colors.pink[6],
+                    },
+                  },
+                })}
                 {...form.getInputProps("name")}
               />
               <PasswordInput
                 label="Mật Khẩu"
                 mt="md"
                 size="md"
+                styles={(theme) => ({
+                  input: {
+                    "&:focus-within": {
+                      borderColor: theme.colors.pink[6],
+                    },
+                  },
+                })}
                 {...form.getInputProps("password")}
               />
               <TextInput
                 label="Email"
                 mt="md"
                 size="md"
+                styles={(theme) => ({
+                  input: {
+                    "&:focus-within": {
+                      borderColor: theme.colors.pink[6],
+                    },
+                  },
+                })}
                 {...form.getInputProps("email")}
               />
               <TextInput
                 label="Số Điện Thoại"
                 mt="md"
                 size="md"
+                styles={(theme) => ({
+                  input: {
+                    "&:focus-within": {
+                      borderColor: theme.colors.pink[6],
+                    },
+                  },
+                })}
                 {...form.getInputProps("phone")}
               />
 
@@ -117,6 +145,41 @@ const Signup = () => {
                 size="md"
                 inputFormat="DD/MM/YYYY"
                 labelFormat="MM/YYYY"
+                dropdownType="modal"
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+
+                calendarHeaderLevel: {
+                  backgroundColor: theme.colors.pink[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+
+                monthPickerControlActive: {
+                  backgroundColor: theme.colors.pink[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+
+                yearPickerControlActive: {
+                  backgroundColor: theme.colors.pink[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+
+                day: {
+                  "&[data-selected]": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+              })}
                 {...form.getInputProps("birthday")}
               />
 

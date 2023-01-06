@@ -51,58 +51,72 @@ const Signin = () => {
   }
 
   return (
-    <div className={styles.container} >
-        <Group position="center" h="100vh">
-          <Paper
-            radius={15}
-            p={30}
-            shadow="xl"
-            w={size.width > 900 ? 500 : size.width > 600 ? 400 : 340}
+    <div className={styles.container}>
+      <Group position="center" h="100vh">
+        <Paper
+          radius={15}
+          p={30}
+          shadow="xl"
+          w={size.width > 900 ? 500 : size.width > 600 ? 400 : 340}
+        >
+          <form
+            onSubmit={form.onSubmit((values) => handleSubmit(values))}
+            style={{ position: "relative" }}
           >
-            <form
-              onSubmit={form.onSubmit((values) => handleSubmit(values))}
-              style={{ position: "relative" }}
+            <Title order={2} align="center" mt="md" mb={50}>
+              Đăng Nhập
+            </Title>
+
+            <TextInput
+              label="Email"
+              size="md"
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+              })}
+              {...form.getInputProps("email")}
+            />
+            <PasswordInput
+              label="Mật Khẩu"
+              mt="md"
+              size="md"
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+              })}
+              {...form.getInputProps("password")}
+            />
+
+            <Button
+              mt="xl"
+              size="md"
+              type="submit"
+              className={styles.signin__button}
+              color="pink"
             >
-              <Title order={2} align="center" mt="md" mb={50}>
-                Đăng Nhập
-              </Title>
+              Đăng Nhập
+            </Button>
+            <LoadingOverlay visible={loading} overlayBlur={2} />
 
-              <TextInput
-                label="Email"
-                size="md"
-                {...form.getInputProps("email")}
-              />
-              <PasswordInput
-                label="Mật Khẩu"
-                mt="md"
-                size="md"
-                {...form.getInputProps("password")}
-              />
-
-              <Button
-                mt="xl"
-                size="md"
-                type="submit"
-                className={styles.signin__button}
-                color="pink"
-              >
-                Đăng Nhập
-              </Button>
-              <LoadingOverlay visible={loading} overlayBlur={2} />
-
-              {error && <Text color="red">{error}</Text>}
-            </form>
-            <Text align="center" mt="md">
-              Chưa có tài khoản?{" "}
-              <span
-                onClick={() => navigate("/signup")}
-                className={styles.signin__dangKy}
-              >
-                Đăng ký ngay!
-              </span>
-            </Text>
-          </Paper>
-        </Group>
+            {error && <Text color="red">{error}</Text>}
+          </form>
+          <Text align="center" mt="md">
+            Chưa có tài khoản?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              className={styles.signin__dangKy}
+            >
+              Đăng ký ngay!
+            </span>
+          </Text>
+        </Paper>
+      </Group>
     </div>
   );
 };

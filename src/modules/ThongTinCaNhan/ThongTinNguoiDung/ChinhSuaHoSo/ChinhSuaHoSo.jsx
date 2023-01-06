@@ -114,7 +114,6 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               label="Họ Tên"
               mt="md"
               size="md"
-              {...form.getInputProps("name")}
               styles={(theme) => ({
                 input: {
                   "&:focus-within": {
@@ -129,7 +128,6 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               label="Email"
               mt="md"
               size="md"
-              {...form.getInputProps("name")}
               styles={(theme) => ({
                 input: {
                   "&:focus-within": {
@@ -143,7 +141,6 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               label="Số Điện Thoại"
               mt="md"
               size="md"
-              {...form.getInputProps("name")}
               styles={(theme) => ({
                 input: {
                   "&:focus-within": {
