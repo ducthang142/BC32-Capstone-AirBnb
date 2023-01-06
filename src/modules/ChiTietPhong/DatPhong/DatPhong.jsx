@@ -11,12 +11,14 @@ import {
   Input,
   LoadingOverlay,
   Group,
-  Text,
+  Text
 } from "@mantine/core";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./DatPhong.module.scss";
 import { booking, resetIsBooked } from "../../../slices/roomDetailSlice";
+import useWindowSize from "../../../utils/useWindowSize";
+import TickSuccessIcon from "../../../components/TickSuccessIcon";
 
 const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
   const [value, setValue] = useState([null, null]);
@@ -26,15 +28,19 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
     (state) => state.roomDetail
   );
   const [opened, setOpened] = useState(false);
+  const size = useWindowSize();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [openBooking, setOpenBooking] = useState(false);
   const [openWarning, setOpenWarning] = useState(false);
   const [thongTinPhongDat, setThongTinPhongDat] = useState({});
+  const [openSuccess, setOpenSuccess] = useState(false);
 
+  //Đặt url để chuyển hướng người dùng về trang đăng nhập, sau khi đăng nhập xong sẽ đưa về lại trang chi tiết phòng
   const url = `/signin?redirectUrl=${location.pathname}`;
 
+  //Call API để lấy danh sách đặt phòng
   useEffect(() => {
     (async () => {
       try {
@@ -46,30 +52,38 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
     })();
   }, [count]);
 
+  //Lọc danh sách đặt phòng của mã phòng đang xem và chưa trả phòng(=> ngày đi phải lớn hơn ngày hiện tại)
   const danhSachDaDat = danhSachPhongDat?.filter(
     (item) => item.maPhong == maPhong && new Date(item.ngayDi) > new Date()
   );
 
+  //Biến mảng danh sách trên thành các phần tử object có dạng {ngayDen,ngayDi}
   const danhSachNgayDat = danhSachDaDat.map((item) => {
     return { ngayDen: item.ngayDen, ngayDi: item.ngayDi };
   });
 
+  //Dùng hàm getDatesInRange để biến mảng danh sánh thành các phân tử có object chứa các ngày cụ thể giữa 2 khoảng ngày đến và ngày đi
   const NewDanhSachNgayDat = danhSachNgayDat.map((item) => {
     return getDatesInRange(new Date(item.ngayDen), new Date(item.ngayDi));
   });
 
-  let a = [];
-
+  //Nối các object trong mảng vừa tìm dc ở trên thành 1 mảng duy nhất
+  let days = [];
   for (let i = 0; i < NewDanhSachNgayDat.length; i++) {
-    a = a.concat(NewDanhSachNgayDat[i]);
+    days = days.concat(NewDanhSachNgayDat[i]);
   }
 
-  const d = a.map((item) => item.getTime());
-  d.sort();
+  //Quy đổi ngày trang mảng days ở trên qua times rồi dùng sort() để sắp xếp theo thứ tự từ lớn đến nhỏ
+  days = days.map((item) => item.getTime());
+  days.sort();
 
-  const b = value[0] ? d.filter((item) => item > value[0].getTime()) : "";
+  //Sau khi người dùng chọn ngày đến, thì sẽ lọc ra 1 mảng maxDates gồm những ngày lớn hơn ngày dc người dùng chọn, thì khi đó phần tử đầu tiên của mảng maxDates sẽ là giới hạn cho người dùng chọn ngày đi
+  const maxDates = value[0]
+    ? days.filter((item) => item > value[0].getTime())
+    : "";
 
-  const newB = b ? b.map((item) => new Date(item)) : "";
+  //Quy đổi mảng maxDates cũ từ dạng time qua dạng ngày
+  const newMaxDates = maxDates ? maxDates.map((item) => new Date(item)) : "";
 
   //Số khách
   const [nguoiLon, setNguoiLon] = useState(1);
@@ -77,8 +91,10 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
   const [emBe, setEmBe] = useState(0);
   const [thuCung, setThuCung] = useState(0);
 
+  //Khách chỉ tính người lớn và trẻ em, em bé và thú cưng ko tính vào
   const khach = nguoiLon + treEm;
 
+  //Chức năng cho phím tăng người
   const handleIncrease = (loaiKhach) => {
     switch (loaiKhach) {
       case "nguoiLon":
@@ -97,6 +113,7 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
     }
   };
 
+  //Chức năng cho phím giảm người
   const handleDecrease = (loaiKhach) => {
     switch (loaiKhach) {
       case "nguoiLon":
@@ -115,9 +132,12 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
     }
   };
 
+  //Tính số ngày thuê của người dùng, dùng hàm calDatesInrange truyền vào ngày đến và ngày đi để tính
   const soDemThue = value[1] ? calDatesInRange(value[0], value[1]) : 0;
 
   //Đặt phòng
+
+  //Hiện cảnh báo và confirm modal
   const handleBooking = () => {
     if (!user) {
       setOpened(true);
@@ -139,38 +159,90 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
     }
   };
 
+  //Call API đặt phòng
   const handleConfirm = () => {
     dispatch(booking(thongTinPhongDat));
-    console.log(thongTinPhongDat);
     setValue([null, null]);
   };
+
+  //Hiện thông báo thành công
+  useEffect(() => {
+    if (isBooked) {
+      setOpenSuccess(true);
+      setTimeout(() => setOpenSuccess(false), 1500);
+      setOpenBooking(false);
+      dispatch(resetIsBooked());
+    }
+  }, [isBooked]);
 
   return (
     <>
       <div className={styles.card}>
-        <h4>${giaTien} đêm</h4>
+        <h4>${giaTien} /đêm</h4>
         <DateRangePicker
-          label="Book"
+          label="Chọn ngày thuê"
           placeholder="Ngày đến - Ngày đi"
           value={value}
           onChange={setValue}
           amountOfMonths={2}
           inputFormat="DD/MM/YYYY"
           minDate={value[0] || new Date()}
-          maxDate={newB[0]}
-          excludeDate={(date) => d.includes(new Date(date).getTime())}
+          maxDate={newMaxDates[0]}
+          excludeDate={(date) => days.includes(new Date(date).getTime())}
           styles={(theme) => ({
             input: {
               "&:focus-within": {
                 borderColor: theme.colors.pink[6],
               },
             },
+
+            calendarHeaderLevel: {
+              backgroundColor: theme.colors.pink[6],
+              "&:hover": {
+                backgroundColor: theme.colors.pink[6],
+              },
+            },
+
+            monthPickerControlActive: {
+              backgroundColor: theme.colors.pink[6],
+              "&:hover": {
+                backgroundColor: theme.colors.pink[6],
+              },
+            },
+
+            yearPickerControlActive: {
+              backgroundColor: theme.colors.pink[6],
+              "&:hover": {
+                backgroundColor: theme.colors.pink[6],
+              },
+            },
+
+            day: {
+              "&[data-selected]": {
+                backgroundColor: theme.colors.pink[6],
+                pointerEvents: "none",
+              },
+            },
+
+            calendarBase: {
+              flexDirection: `${size.width < 600 ? "column" : "row"}`,
+            },
           })}
         />
 
         <Menu position="bottom-start">
           <Menu.Target>
-            <Input value={`${khach} khách`} />
+            <Input
+              value={`${khach} khách`}
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+              })}
+              mt={10}
+            />
           </Menu.Target>
           <Menu.Dropdown className={styles.menu}>
             <div>
@@ -240,7 +312,7 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
           </Menu.Dropdown>
         </Menu>
         <br />
-        <Button onClick={() => handleBooking()} color="pink">
+        <Button onClick={() => handleBooking()} color="pink" mb={20}>
           Đặt Phòng
         </Button>
 
@@ -358,17 +430,12 @@ const DatPhong = ({ maPhong, khachToiDa, giaTien, tenPhong }) => {
         <LoadingOverlay visible={bookingLoading} overlayBlur={2} />
       </Modal>
 
-      <Modal size="auto" opened={isBooked} withCloseButton={false} centered>
-        <Title m={20}>Đặt phòng thành công!</Title>
+      <Modal opened={openSuccess} withCloseButton={false} size="auto">
+        <TickSuccessIcon />
 
-        <Group position="center">
-          <Button
-            onClick={() => dispatch(resetIsBooked()) & setOpenBooking(false)}
-            color="pink"
-          >
-            Đóng
-          </Button>
-        </Group>
+        <Text m={12} fw={700} fz={32} className="text-center">
+          Đặt phòng thành công
+        </Text>
       </Modal>
     </>
   );

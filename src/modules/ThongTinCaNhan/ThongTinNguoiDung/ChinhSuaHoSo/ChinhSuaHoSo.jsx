@@ -17,12 +17,14 @@ import { update, resetIsUpdate } from "../../../../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import formatDateToFE from "../../../../utils/formatDateToFE";
 import formatDateUpAPI from "../../../../utils/formatDateUpAPI";
+import TickSuccessIcon from "../../../../components/TickSuccessIcon";
 
 const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
   const [opened, setOpened] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const dispatch = useDispatch();
+  const [openSuccess, setOpenSuccess] = useState(false);
   const { loading, updateError, isUpdateFulfilled } = useSelector(
     (state) => state.auth
   );
@@ -58,6 +60,7 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
     });
   }, [opened]);
 
+  //Hiện cảnh báo confirm
   const handleSubmit = (values) => {
     const newValues = {
       ...values,
@@ -67,11 +70,22 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
     setOpenModal(true);
   };
 
+  //Call API update thông tin
   const handleUpdate = () => {
     const values = { ...userInfo, id: nguoiDung.id };
     dispatch(update(values));
     setOpenModal(false);
   };
+
+  //Thông báo thành công
+  useEffect(() => {
+    if (isUpdateFulfilled) {
+      setOpenSuccess(true);
+      setTimeout(() => setOpenSuccess(false), 1500);
+      isUpdate();
+      dispatch(resetIsUpdate());
+    }
+  }, [isUpdateFulfilled]);
 
   return (
     <>
@@ -93,7 +107,7 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
             style={{ position: "relative" }}
           >
             <Title order={2} align="center" mt="md" mb={50}>
-              Đăng Ký
+              Sửa thông tin cá nhân
             </Title>
 
             <TextInput
@@ -101,18 +115,42 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               mt="md"
               size="md"
               {...form.getInputProps("name")}
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+              })}
+              {...form.getInputProps("name")}
             />
 
             <TextInput
               label="Email"
               mt="md"
               size="md"
+              {...form.getInputProps("name")}
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+              })}
               {...form.getInputProps("email")}
             />
             <TextInput
               label="Số Điện Thoại"
               mt="md"
               size="md"
+              {...form.getInputProps("name")}
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+              })}
               {...form.getInputProps("phone")}
             />
 
@@ -123,6 +161,41 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               size="md"
               inputFormat="DD/MM/YYYY"
               labelFormat="MM/YYYY"
+              dropdownType="modal"
+              styles={(theme) => ({
+                input: {
+                  "&:focus-within": {
+                    borderColor: theme.colors.pink[6],
+                  },
+                },
+
+                calendarHeaderLevel: {
+                  backgroundColor: theme.colors.pink[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+
+                monthPickerControlActive: {
+                  backgroundColor: theme.colors.pink[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+
+                yearPickerControlActive: {
+                  backgroundColor: theme.colors.pink[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+
+                day: {
+                  "&[data-selected]": {
+                    backgroundColor: theme.colors.pink[6],
+                  },
+                },
+              })}
               {...form.getInputProps("birthday")}
             />
 
@@ -130,16 +203,23 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
               Cập Nhật
             </Button>
             {updateError && <Text color="red">{updateError}</Text>}
-            <LoadingOverlay visible={loading} overlayBlur={2} />
+            <LoadingOverlay visible={loading} overlayBlur={2} loaderProps={{ size: "sm", color: "pink", variant: "bars" }}/>
           </form>
         </Paper>
       </Drawer>
 
       {/* Modal */}
       <Modal opened={openModal} onClose={() => setOpenModal(false)}>
-        <Title m={20} className="text-center">Bạn có muốn cập nhật lại thông tin!</Title>
+        <Title m={20} className="text-center">
+          Bạn có muốn cập nhật lại thông tin!
+        </Title>
         <Group position="center">
-          <Button onClick={() => handleUpdate()} w={90} color="pink" variant="outline">
+          <Button
+            onClick={() => handleUpdate()}
+            w={90}
+            color="pink"
+            variant="outline"
+          >
             Có
           </Button>
           <Button onClick={() => setOpenModal(false)} w={90} color="pink">
@@ -148,14 +228,12 @@ const ChinhSuaHoSo = ({ nguoiDung, isUpdate }) => {
         </Group>
       </Modal>
 
-      <Modal
-        opened={isUpdateFulfilled}
-        withCloseButton={false}
-        onClose={() => dispatch(resetIsUpdate()) & isUpdate()}
-        size="auto"
-        centered
-      >
-        <Title>Cập nhật thành công</Title>
+      <Modal opened={openSuccess} withCloseButton={false} size="auto">
+        <TickSuccessIcon />
+
+        <Text m={12} fw={700} fz={32} className="text-center">
+          Cập nhật thành công
+        </Text>
       </Modal>
     </>
   );

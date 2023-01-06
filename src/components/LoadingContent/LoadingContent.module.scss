@@ -1,0 +1,21 @@
+.container {
+  background: #e64980;
+  height: 100vh;
+  background-image: url("../../../public/image/background-loading.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.svg {
+  width: 350px;
+  height: 350px;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  animation-name: preloader;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+

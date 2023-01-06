@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../Header'
 import { Outlet } from "react-router-dom";
 import Footer from '../Footer';
+import UpToTop from '../UpToTop/UpToTop';
 
 const RootLayout = () => {
   return (
@@ -9,6 +10,7 @@ const RootLayout = () => {
       <Header />
       <Outlet />
       <Footer />
+      <UpToTop />
     </>
   )
 }

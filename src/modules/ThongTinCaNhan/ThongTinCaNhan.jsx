@@ -7,8 +7,8 @@ import { Grid } from '@mantine/core';
 const ThongTinCaNhan = () => {
   return <div className={styles.container}>
     <Grid>
-      <Grid.Col md={4} ><ThongTinNguoiDung /></Grid.Col>
-      <Grid.Col md={8} ><ThongTinDatPhong /></Grid.Col>
+      <Grid.Col md={4} xl={3} ><ThongTinNguoiDung /></Grid.Col>
+      <Grid.Col md={8} xl={9} ><ThongTinDatPhong /></Grid.Col>
     </Grid>
     
   </div>;

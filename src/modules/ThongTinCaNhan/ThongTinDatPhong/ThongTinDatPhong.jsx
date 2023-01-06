@@ -4,6 +4,7 @@ import phongAPI from "../../../services/phongAPI";
 import { useSelector } from "react-redux";
 import { Card, Image, Text, Group, createStyles, Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import LoadingContent from "../../../components/LoadingContent";
 
 const ThongTinDatPhong = () => {
   const { user } = useSelector((state) => state.auth);
@@ -11,6 +12,7 @@ const ThongTinDatPhong = () => {
   const [thongTinPhong, setThongTinPhong] = useState([]);
   const navigate = useNavigate();
 
+  //Call API lấy thông tin đặt phòng theo ID người dùng và danh sách phòng
   useEffect(() => {
     (async () => {
       try {
@@ -27,13 +29,13 @@ const ThongTinDatPhong = () => {
     })();
   }, []);
 
+  //Tìm kiếm thông tin phòng theo mã phòng
   const handleRoomInfo = (maPhong) => {
     const phong = thongTinPhong.filter((item) => item.id === maPhong);
     return phong;
   };
 
-  //Mantine
-
+  //CSS của thư viện Mantine
   const useStyles = createStyles((theme) => ({
     card: {
       backgroundColor:
@@ -61,6 +63,9 @@ const ThongTinDatPhong = () => {
 
   return (
     <>
+      <div hidden={!thongTinDatPhong[0] ? false : true}>
+        <LoadingContent />
+      </div>
       {thongTinDatPhong?.map((item, index) => (
         <Card withBorder p="lg" className={classes.card} key={index} mb={20}>
           <Card.Section>
@@ -89,7 +94,10 @@ const ThongTinDatPhong = () => {
           </Text>
 
           <Card.Section className={classes.footer}>
-            <Button onClick={() => navigate(`/chitietphong/${item.maPhong}`)} color="pink">
+            <Button
+              onClick={() => navigate(`/chitietphong/${item.maPhong}`)}
+              color="pink"
+            >
               Xem chi tiết phòng
             </Button>
           </Card.Section>

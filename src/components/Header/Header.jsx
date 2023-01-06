@@ -1,5 +1,5 @@
 import styles from "./Header.module.scss";
-import SearchBar from "../SearchBar";
+import SearchBar from "./SearchBar";
 import { logout } from "../../slices/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -112,11 +112,12 @@ const Header1 = () => {
                 variant="outline"
                 color="pink"
                 onClick={() => navigate("/signin")}
+                w={107}
               >
-                Sign in
+                Đăng nhập
               </Button>
-              <Button onClick={() => navigate("/signup")} color="pink">
-                Sign up
+              <Button onClick={() => navigate("/signup")} color="pink" w={107}>
+                Đăng ký
               </Button>
             </Group>
 
@@ -127,8 +128,7 @@ const Header1 = () => {
               styles={{
                 item: {
                   "&[data-hovered]": {
-                    backgroundColor:
-                    theme.colors.pink[6],
+                    backgroundColor: theme.colors.pink[6],
                     color: theme.white,
                   },
                 },
@@ -138,7 +138,6 @@ const Header1 = () => {
                 <Avatar
                   radius="xl"
                   size={40}
-                  ml={90}
                   src={user ? user.user.avatar : null}
                 />
               </Menu.Target>
@@ -189,10 +188,16 @@ const Header1 = () => {
             />
 
             <Group position="center" grow pb="xl" px="md">
-              <Button variant="outline" color="pink">
-                Sign in
+              <Button
+                variant="outline"
+                color="pink"
+                onClick={() => navigate("/signin")}
+              >
+                Đăng nhập
               </Button>
-              <Button color="pink">Sign up</Button>
+              <Button color="pink" onClick={() => navigate("/signup")}>
+                Đăng ký
+              </Button>
             </Group>
           </ScrollArea>
         </Drawer>

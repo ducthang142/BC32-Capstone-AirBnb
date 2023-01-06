@@ -26,6 +26,7 @@ const BinhLuan = ({ maPhong }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //Call API lấy bình luận theo mã phòng
   useEffect(() => {
     (async () => {
       try {
@@ -37,7 +38,7 @@ const BinhLuan = ({ maPhong }) => {
     })();
   }, [maPhong, isCmt]);
 
-  //Mantine
+  //CSS của thư viện Mantine
   const useStyles = createStyles((theme) => ({
     comment: {
       padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
@@ -50,6 +51,7 @@ const BinhLuan = ({ maPhong }) => {
   }));
   const { classes } = useStyles();
 
+  //Call API để post bình luận
   const handleComment = () => {
     const values = {
       maPhong: maPhong,
@@ -64,6 +66,7 @@ const BinhLuan = ({ maPhong }) => {
     setComment("");
   };
 
+  //Điều hướng người dùng đến trang đăng nhập để bình luận
   const url = `/signin?redirectUrl=${location.pathname}`;
 
   return (

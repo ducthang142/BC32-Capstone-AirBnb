@@ -18,8 +18,10 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import formatDateUpAPI from "../../../utils/formatDateUpAPI";
+import useWindowSize from "../../../utils/useWindowSize";
 
 const Signup = () => {
+  const size = useWindowSize();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, signupError, isSignupFulfilled } = useSelector(
@@ -41,7 +43,11 @@ const Signup = () => {
 
     validate: {
       name: (value) =>
-        value.length < 6 ? "Tên phải có ít nhất 6 kí tự" : value.length > 16 ? "Tên không được quá 16 kí tự" : null,
+        value.length < 6
+          ? "Tên phải có ít nhất 6 kí tự"
+          : value.length > 16
+          ? "Tên không được quá 16 kí tự"
+          : null,
       password: (value) =>
         /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value)
           ? null
@@ -64,74 +70,70 @@ const Signup = () => {
   return (
     <>
       <div className={styles.container}>
-        <Grid>
-          <Grid.Col sm={12} md={5}>
-            <Paper radius={15} p={30} shadow="xl">
-              <form
-                onSubmit={form.onSubmit((values) => handleSubmit(values))}
-                style={{ position: "relative" }}
+        <Group position="center" h="100vh">
+          <Paper
+            radius={15}
+            p={30}
+            shadow="xl"
+            w={size.width > 900 ? 500 : size.width > 600 ? 400 : 370}
+          >
+            <form
+              onSubmit={form.onSubmit((values) => handleSubmit(values))}
+              style={{ position: "relative" }}
+            >
+              <Title order={2} align="center" mt="md" mb={50}>
+                Đăng Ký
+              </Title>
+
+              <TextInput
+                label="Họ Tên"
+                mt="md"
+                size="md"
+                {...form.getInputProps("name")}
+              />
+              <PasswordInput
+                label="Mật Khẩu"
+                mt="md"
+                size="md"
+                {...form.getInputProps("password")}
+              />
+              <TextInput
+                label="Email"
+                mt="md"
+                size="md"
+                {...form.getInputProps("email")}
+              />
+              <TextInput
+                label="Số Điện Thoại"
+                mt="md"
+                size="md"
+                {...form.getInputProps("phone")}
+              />
+
+              <DatePicker
+                placeholder="Chọn ngày"
+                label="Ngày Sinh"
+                mt="md"
+                size="md"
+                inputFormat="DD/MM/YYYY"
+                labelFormat="MM/YYYY"
+                {...form.getInputProps("birthday")}
+              />
+
+              <Button
+                mt="xl"
+                size="md"
+                type="submit"
+                className={styles.signup__button}
+                color="pink"
               >
-                <Title order={2} align="center" mt="md" mb={50}>
-                  Đăng Ký
-                </Title>
-
-                <TextInput
-                  label="Họ Tên"
-                  mt="md"
-                  size="md"
-                  {...form.getInputProps("name")}
-                />
-                <PasswordInput
-                  label="Mật Khẩu"
-                  mt="md"
-                  size="md"
-                  {...form.getInputProps("password")}
-                />
-                <TextInput
-                  label="Email"
-                  mt="md"
-                  size="md"
-                  {...form.getInputProps("email")}
-                />
-                <TextInput
-                  label="Số Điện Thoại"
-                  mt="md"
-                  size="md"
-                  {...form.getInputProps("phone")}
-                />
-
-                <DatePicker
-                  placeholder="Chọn ngày"
-                  label="Ngày Sinh"
-                  mt="md"
-                  size="md"
-                  inputFormat="DD/MM/YYYY"
-                  labelFormat="MM/YYYY"
-                  {...form.getInputProps("birthday")}
-                />
-
-                <Button
-                  mt="xl"
-                  size="md"
-                  type="submit"
-                  className={styles.signup__button}
-                  color="pink"
-                >
-                  Đăng Ký
-                </Button>
-                <LoadingOverlay visible={loading} overlayBlur={2} />
-                {signupError && <Text color="red">{signupError}</Text>}
-              </form>
-            </Paper>
-          </Grid.Col>
-          <Grid.Col sm={0} md={7}>
-            <Image
-              src="https://media.cntraveler.com/photos/62a8e81a581aa8cbcc983c34/5:4/w_1000,h_800,c_limit/Airbnb%2043715467%202.jpg"
-              height="auto"
-              alt="Toàn bộ nhà"
-            />
-          </Grid.Col>
-        </Grid>
+                Đăng Ký
+              </Button>
+              <LoadingOverlay visible={loading} overlayBlur={2} />
+              {signupError && <Text color="red">{signupError}</Text>}
+            </form>
+          </Paper>
+        </Group>
       </div>
 
       <Modal

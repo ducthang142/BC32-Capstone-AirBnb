@@ -29,7 +29,7 @@ const Showing = () => {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
   const slides = danhSachViTriPhanTrang?.data?.map((item, index) => (
-    <Carousel.Slide key={index}>
+    <Carousel.Slide key={index} >
       <Paper
         shadow="md"
         p="xl"
@@ -37,6 +37,7 @@ const Showing = () => {
         sx={{ backgroundImage: `url(${item.hinhAnh})` }}
         className={styles.showing__card}
       >
+        
         <div>
           <Text size="xs" className={styles.showing__text} color="pink">
             {item.tinhThanh}
@@ -53,6 +54,7 @@ const Showing = () => {
           Danh sách phòng
         </Button>
       </Paper>
+    
     </Carousel.Slide>
   ));
 

@@ -6,22 +6,23 @@ import {
   Button,
   Title,
   Text,
-  Grid,
-  Image,
-  LoadingOverlay
+  Group,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate, useSearchParams, useNavigate } from "react-router-dom";
 import { signin } from "../../../slices/authSlice";
 import styles from "./Signin.module.scss";
+import useWindowSize from "../../../utils/useWindowSize";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
- 
-  //Mantine
+  const size = useWindowSize();
+
+  //Form
   const form = useForm({
     validateInputOnChange: true,
     initialValues: {
@@ -38,6 +39,7 @@ const Signin = () => {
     },
   });
 
+  //Call API để đăng nhập
   const handleSubmit = (values) => {
     dispatch(signin(values));
   };
@@ -49,11 +51,18 @@ const Signin = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <Grid>
-        <Grid.Col sm={12} md={5}>
-          <Paper radius={15} p={30} shadow="xl">
-            <form onSubmit={form.onSubmit((values) => handleSubmit(values))} style={{ position: 'relative' }}>
+    <div className={styles.container} >
+        <Group position="center" h="100vh">
+          <Paper
+            radius={15}
+            p={30}
+            shadow="xl"
+            w={size.width > 900 ? 500 : size.width > 600 ? 400 : 340}
+          >
+            <form
+              onSubmit={form.onSubmit((values) => handleSubmit(values))}
+              style={{ position: "relative" }}
+            >
               <Title order={2} align="center" mt="md" mb={50}>
                 Đăng Nhập
               </Title>
@@ -69,7 +78,7 @@ const Signin = () => {
                 size="md"
                 {...form.getInputProps("password")}
               />
-              
+
               <Button
                 mt="xl"
                 size="md"
@@ -80,7 +89,7 @@ const Signin = () => {
                 Đăng Nhập
               </Button>
               <LoadingOverlay visible={loading} overlayBlur={2} />
-             
+
               {error && <Text color="red">{error}</Text>}
             </form>
             <Text align="center" mt="md">
@@ -93,15 +102,7 @@ const Signin = () => {
               </span>
             </Text>
           </Paper>
-        </Grid.Col>
-        <Grid.Col sm={0} md={7}>
-          <Image
-            src="https://media.cntraveler.com/photos/62a8e81a581aa8cbcc983c34/5:4/w_1000,h_800,c_limit/Airbnb%2043715467%202.jpg"
-            height="auto"
-            alt="Toàn bộ nhà"
-          />
-        </Grid.Col>
-      </Grid>
+        </Group>
     </div>
   );
 };

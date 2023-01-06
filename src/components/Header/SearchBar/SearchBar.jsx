@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { listVitri } from "../../slices/homeSlice";
+import { listVitri, increaseCount } from "../../../slices/homeSlice";
 import {
   ActionIcon,
   useMantineTheme,
@@ -8,9 +8,8 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
-import { increaseCount } from "../../slices/homeSlice";
 import { useDispatch, useSelector } from "react-redux";
-import useWindowSize from "../../utils/useWindowSize";
+import useWindowSize from "../../../utils/useWindowSize";
 
 const SearchBar = () => {
   const theme = useMantineTheme();
@@ -51,12 +50,12 @@ const SearchBar = () => {
         value={value}
         onChange={setValue}
         w={
-          size.width > 1100
+          size.width > 1144
             ? 600
-            : size.width <= 1100 && size.width > 810
+            : size.width <= 1144 && size.width > 866
             ? 350
-            : size.width <= 810 && size.width > 600
-            ? 300
+            : size.width <= 866 && size.width > 811
+            ? 240
             : "auto"
         }
         maxDropdownHeight={280}

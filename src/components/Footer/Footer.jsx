@@ -1,5 +1,10 @@
 import React from "react";
-import { Text, Group, Grid, Image, Center } from "@mantine/core";
+import { Group, Grid, Image } from "@mantine/core";
+import {
+  IconBrandFacebook,
+  IconBrandTwitter,
+  IconBrandYoutube,
+} from "@tabler/icons";
 import styles from "./Footer.module.scss";
 
 const Footer = () => {
@@ -7,7 +12,7 @@ const Footer = () => {
     <div className={styles.container}>
       <Grid columns={20} my={30} className={styles.footer__content}>
         <Grid.Col md={10} xl={8}>
-          <Image src="./image/logo.png" alt="logo" width={200} />
+          <Image src="./image/logo.png" alt="logo" width={300} />
         </Grid.Col>
         <Grid.Col md={10} xl={4}>
           <h4>Trợ giúp</h4>
@@ -70,20 +75,20 @@ const Footer = () => {
           </ul>
         </Grid.Col>
       </Grid>
-      <div className={styles.footer__copyright}>
-        <p>© 2020 mantine.dev. All rights reserved.</p>
+      <Group className={styles.footer__copyright}>
+        <p>© 2023 tama. All rights reserved.</p>
         <div>
-          <a href="">
-            <i class="fa-brands fa-facebook"></i>
+          <a href="#">
+            <IconBrandFacebook />
           </a>
-          <a href="">
-            <i class="fa-brands fa-twitter"></i>
+          <a href="#">
+            <IconBrandTwitter />
           </a>
-          <a href="">
-            <i class="fa-brands fa-youtube"></i>
+          <a href="#">
+            <IconBrandYoutube />
           </a>
         </div>
-      </div>
+      </Group>
     </div>
   );
 };
