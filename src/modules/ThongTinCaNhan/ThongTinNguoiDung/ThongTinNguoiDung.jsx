@@ -97,7 +97,7 @@ const ThongTinNguoiDung = () => {
   return (
     <>
       <Card withBorder p="none" radius="md" shadow="xl" style={{ position: "relative" }}>
-          <Skeleton visible={!nguoiDung.avatar}>
+          <Skeleton visible={!nguoiDung.name}>
             <Card.Section>
               <Image
                 src="./image/avatar-background.jpg"
